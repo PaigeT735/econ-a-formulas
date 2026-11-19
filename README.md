@@ -127,3 +127,10 @@ The card, table and rich-text components can be reused for worked solutions.
 | `Esc` | Close search or the mobile menu |
 
 Every card has a **Link** button that copies a direct URL to it.
+
+## Navigation and themes
+
+- The top bar holds the section tabs; the underline slides to the section you are in.
+- On a section page a second bar lists every card. Its underline follows you as you scroll, and clicking a name jumps to (and opens) that card.
+- The moon/sun button switches between light (default) and dark mode. The choice is remembered in the browser.
+- Colours for both themes live in `assets/css/tokens.css` (`:root` for light, `:root[data-theme='dark']` for dark).

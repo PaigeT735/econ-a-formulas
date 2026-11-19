@@ -7,10 +7,10 @@ import { icons } from '../lib/icons.js';
 
 const LEGEND = [
   ['legend__swatch--formula', 'Formula', 'The headline result, always visible. Scan these first.'],
-  ['block--forms', 'Alternative forms', 'Rearrangements, special cases and shortcuts for variations of the question.'],
-  ['legend__swatch--when', 'When &amp; why', 'What the formula is for, plus every variable defined.'],
-  ['block--clues', 'Exam clues', 'Wording in a question that tells you to reach for this formula.'],
-  ['block--traps', 'Common traps', 'The mistakes that lose marks most often.'],
+  ['block--when', 'When to use it', 'What the formula is for and why it works, in plain words.'],
+  ['block--forms', 'Other ways to write it', 'Rearrangements, special cases and shortcuts, with every symbol defined.'],
+  ['block--clues', 'Spot it in a question', 'Wording in a question that tells you to reach for this formula.'],
+  ['block--traps', 'Watch out for', 'The mistakes that lose marks most often.'],
   ['block--example', 'Worked example', 'Fresh illustrative numbers, so the practice-paper answers stay unspoiled.'],
 ];
 
@@ -79,7 +79,7 @@ export default {
       <section class="home-section" aria-labelledby="legend-title">
         <div class="home-section__head">
           <div><div class="eyebrow">How to read a card</div><h2 class="home-section__title" id="legend-title">Card anatomy</h2></div>
-          <p class="home-section__intro">Cards open to show the detail. Badges show which practice-paper questions use a formula, and which cards go beyond the paper.</p>
+          <p class="home-section__intro">Press “Show explanation” on any card to open the detail. Badges show which practice-paper questions use a formula, and which cards go beyond the paper.</p>
         </div>
         <div class="legend">${legend}</div>
       </section>

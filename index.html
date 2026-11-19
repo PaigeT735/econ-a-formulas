@@ -6,6 +6,10 @@
   <title>Formula Library · Intermediate Economics A</title>
   <meta name="description" content="Exam revision formula library for Intermediate Economics A (Micro): consumer theory, production, costs, competition, monopoly, Cournot, game theory and welfare.">
   <meta name="theme-color" content="#eef3f9">
+  <script>
+    // Apply the saved theme before first paint (no flash). Light is the default.
+    try { if (localStorage.getItem('econ-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) {}
+  </script>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/figtree-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/newsreader-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -23,15 +27,21 @@
   <div class="backdrop" aria-hidden="true"></div>
 
   <div class="app">
-    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
+    <aside class="sidebar" id="sidebar" aria-label="Full menu"></aside>
+
+    <header class="topnav">
+      <div class="topnav__inner">
+        <button class="btn btn--icon menu-btn" type="button" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false"></button>
+        <a class="brand" href="#/" data-slot="brand"></a>
+        <nav class="tabs" aria-label="Sections" data-slot="tabs"></nav>
+        <div class="topnav__tools">
+          <div class="topbar__search"></div>
+          <button class="btn btn--icon theme-toggle" type="button" aria-label="Switch to dark mode"></button>
+        </div>
+      </div>
+    </header>
 
     <div class="shell">
-      <header class="topbar">
-        <button class="btn btn--icon menu-btn" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false"></button>
-        <nav class="crumbs" aria-label="Breadcrumb"></nav>
-        <div class="topbar__search"></div>
-      </header>
-
       <main id="main" tabindex="-1"></main>
 
       <footer class="site-footer">

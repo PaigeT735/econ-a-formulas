@@ -9,6 +9,15 @@ import { renderCard, setCardOpen } from '../components/card.js';
 import { renderTable } from '../components/table.js';
 import { rich, escapeHtml } from '../lib/rich.js';
 import { icons } from '../lib/icons.js';
+import { moveInk } from '../components/sidebar.js';
+
+/** Short label for the in-page nav: "Marginal rate of substitution (MRS)" -> "MRS". */
+function navLabel(card) {
+  if (card.nav) return card.nav;
+  const paren = card.title.match(/\(([^)]+)\)\s*$/);
+  if (paren && paren[1].length <= 5 && paren[1] === paren[1].toUpperCase()) return paren[1];
+  return card.title.split(/:\s|\s\(/)[0];
+}
 
 /* ---------- Index ---------- */
 function renderIndex() {
@@ -62,18 +71,24 @@ function renderSection(section) {
       </div>`
     : '';
 
-  const toc = `
-    <nav class="toc" aria-label="On this page">
-      <div class="toc__group">
-        <div class="toc__label eyebrow">On this page</div>
-        ${section.cards.map((c, idx) => `<a href="#/formulas/${section.id}/${c.id}" data-toc="${c.id}"><span class="toc__code">${cardCode(section, idx)}</span><span>${escapeHtml(c.title)}</span></a>`).join('')}
+  const subnav = `
+    <nav class="subnav" aria-label="Formulas in this section">
+      <div class="subnav__inner">
+        <span class="subnav__label">${String(section.number).padStart(2, '0')} · ${escapeHtml(section.short)}</span>
+        <div class="tabs" data-subnav>
+          <div class="tabs__track">
+            ${section.cards.map((c, idx) => `<a class="tab" href="#/formulas/${section.id}/${c.id}" data-target="${c.id}" title="${escapeHtml(c.title)}"><span class="tab__code">${cardCode(section, idx)}</span>${escapeHtml(navLabel(c))}</a>`).join('')}
+            ${(section.tables ?? []).map((tb) => `<a class="tab" href="#/formulas/${section.id}/${tb.id}" data-target="${tb.id}" title="${escapeHtml(tb.title)}"><span class="tab__code">Table</span>${escapeHtml(tb.title)}</a>`).join('')}
+            <span class="ink" aria-hidden="true"></span>
+          </div>
+        </div>
       </div>
-      ${section.tables?.length ? `<div class="toc__group"><div class="toc__label eyebrow">Compare</div>${section.tables.map((tb) => `<a href="#/formulas/${section.id}/${tb.id}" data-toc="${tb.id}"><span class="toc__code">Tbl</span><span>${escapeHtml(tb.title)}</span></a>`).join('')}</div>` : ''}
     </nav>`;
 
   return `
+  ${subnav}
   <div class="page" data-accent="${section.accent}">
-    <div class="with-toc">
+    <div class="section-wrap">
       <div>
         <header class="section-hero">
           <div class="section-hero__eyebrow"><span class="eyebrow">Section ${String(section.number).padStart(2, '0')}</span><span class="eyebrow">${section.cards.length} formulas</span></div>
@@ -101,7 +116,6 @@ function renderSection(section) {
           ${next ? `<a class="next" href="#/formulas/${next.id}"><span class="eyebrow">Next →</span><span class="pager__title">${escapeHtml(next.title)}</span></a>` : ''}
         </nav>
       </div>
-      ${toc}
     </div>
   </div>`;
 }
@@ -116,6 +130,12 @@ function focusAnchor(root, anchorId, { smooth = true } = {}) {
   }
   requestAnimationFrame(() => {
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    // On first load, fonts and maths can still shift the layout: settle once more.
+    if (!smooth) {
+      const settle = () => { if (Math.abs(el.getBoundingClientRect().top - 130) > 8) el.scrollIntoView({ block: 'start' }); };
+      document.fonts?.ready.then(() => setTimeout(settle, 60));
+      setTimeout(settle, 400);
+    }
     el.classList.remove('is-flash');
     void el.offsetWidth; // restart animation
     el.classList.add('is-flash');
@@ -127,7 +147,8 @@ function applyFilter(root, filter) {
   root.querySelectorAll('.fcard').forEach((card) => {
     const visible = filter === 'all' || (filter === 'paper' && card.dataset.paper === 'true') || (filter === 'extension' && card.dataset.level === 'extension');
     card.hidden = !visible;
-    root.querySelector(`[data-toc="${card.id}"]`)?.classList.toggle('is-hidden', !visible);
+    const chip = root.querySelector(`[data-target="${card.id}"]`);
+    if (chip) chip.hidden = !visible;
     if (visible) shown += 1;
   });
   root.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
@@ -156,6 +177,7 @@ function mountSection(root, params, ctx) {
     const filterBtn = e.target.closest('[data-filter]');
     if (filterBtn) {
       applyFilter(root, filterBtn.dataset.filter);
+      root.__spy?.();
       return;
     }
     const copy = e.target.closest('[data-copy-link]');
@@ -167,23 +189,42 @@ function mountSection(root, params, ctx) {
     }
   });
 
-  // Highlight the card currently in view in the table of contents
-  const tocLinks = new Map([...root.querySelectorAll('[data-toc]')].map((a) => [a.dataset.toc, a]));
-  if (tocLinks.size && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            tocLinks.forEach((a) => a.classList.remove('is-active'));
-            tocLinks.get(entry.target.id)?.classList.add('is-active');
-          }
-        });
-      },
-      { rootMargin: '-20% 0px -70% 0px' }
-    );
-    root.querySelectorAll('.fcard, .ctable').forEach((el) => observer.observe(el));
-    ctx.onLeave(() => observer.disconnect());
-  }
+  // Scroll-spy: slide the underline in the sub-nav to the card currently being read
+  const strip = root.querySelector('[data-subnav]');
+  const chips = [...strip.querySelectorAll('a[data-target]')];
+  const targets = chips.map((a) => root.querySelector(`#${CSS.escape(a.dataset.target)}`));
+  let current = -1;
+  const spy = () => {
+    const line = 112 + window.innerHeight * 0.22;
+    let idx = 0;
+    targets.forEach((el, i) => {
+      if (el && !el.hidden && !chips[i].hidden && el.getBoundingClientRect().top <= line) idx = i;
+    });
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    if (atBottom) {
+      const lastVisible = chips.map((c, i) => (c.hidden ? -1 : i)).filter((i) => i >= 0).pop();
+      if (lastVisible != null) idx = lastVisible;
+    }
+    if (chips[idx]?.hidden) idx = chips.findIndex((c) => !c.hidden);
+    if (idx !== current) {
+      current = idx;
+      chips.forEach((c, i) => c.setAttribute('aria-current', String(i === idx)));
+      moveInk(strip, chips[idx]);
+    }
+  };
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; spy(); });
+  };
+  const onResize = () => { if (current >= 0) moveInk(strip, chips[current], { scroll: false }); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize);
+  ctx.onLeave(() => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); });
+  root.__spy = () => { current = -1; spy(); };
+  requestAnimationFrame(spy);
+  document.fonts?.ready.then(() => root.__spy?.());
 
   focusAnchor(root, params.anchor, { smooth: false });
 }

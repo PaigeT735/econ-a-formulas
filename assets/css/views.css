@@ -11,9 +11,9 @@
   max-width: 17ch;
 }
 .hero__title em {
-  font-style: italic; color: #1f4f8f;
+  font-style: italic; color: var(--brand-ink);
   /* a loose highlighter stroke, slightly tilted, like a pen mark in notes */
-  background: linear-gradient(100deg, transparent 1%, rgba(140, 190, 245, 0.45) 3%, rgba(150, 200, 250, 0.38) 96%, transparent 99%) 0 88% / 100% 0.32em no-repeat;
+  background: linear-gradient(100deg, transparent 1%, var(--highlight) 3%, var(--highlight) 96%, transparent 99%) 0 88% / 100% 0.32em no-repeat;
   padding: 0 0.06em;
 }
 .hero__lede { margin-top: var(--s-6); max-width: 58ch; font-size: var(--fs-md); color: var(--ink-2); }
@@ -49,7 +49,7 @@
   transition: background-color 0.18s var(--ease);
 }
 .index__row + .index__row { border-top: 1px solid var(--line-1); }
-.index__row:hover { background: rgba(255, 255, 255, 0.55); }
+.index__row:hover { background: rgba(var(--glass-rgb), calc(0.55 * var(--glass-k))); }
 .index__num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); display: flex; align-items: center; gap: 10px; }
 .index__num::after { content: ''; width: 14px; height: 1px; background: var(--accent); opacity: 0.6; }
 .index__title { font-family: var(--font-serif); font-size: 1.45rem; line-height: 1.2; }
@@ -82,7 +82,7 @@
 
 /* Card anatomy legend */
 .legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line-1); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow); border-radius: var(--r-md); overflow: hidden; }
-.legend__item { background: rgba(255, 255, 255, 0.66); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); padding: var(--s-5); }
+.legend__item { background: rgba(var(--glass-rgb), calc(0.66 * var(--glass-k))); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); padding: var(--s-5); }
 .legend__item .block__label { margin-bottom: var(--s-2); }
 .legend__item p { color: var(--ink-3); font-size: 0.86rem; }
 .legend__swatch--formula::before { background: var(--accent-production) !important; border-radius: 1px; }

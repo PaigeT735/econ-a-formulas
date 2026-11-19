@@ -5,29 +5,29 @@ import { cardIndex, cardCode } from '../content/formulas/index.js';
 
 const paras = (v) => [].concat(v ?? []).map((p) => `<p>${rich(p)}</p>`).join('');
 const list = (items) => `<ul class="list">${items.map((i) => `<li>${rich(i)}</li>`).join('')}</ul>`;
-const label = (text) => `<div class="block__label">${text}</div>`;
+const label = (text, hint = '') => `<h4 class="block__label">${text}${hint ? `<span class="block__hint">${hint}</span>` : ''}</h4>`;
 
 function formsBlock(forms) {
   if (!forms?.length) return '';
   const rows = forms
     .map((f) => `<div class="form-row"><div class="form-row__label">${rich(f.label)}</div><div class="form-row__tex">${tex(f.tex, true)}</div></div>`)
     .join('');
-  return `<section class="block block--forms">${label('Alternative forms &amp; rearrangements')}<div class="forms">${rows}</div></section>`;
+  return `<section class="block block--forms">${label('Other ways to write it', 'rearrangements, special cases, shortcuts')}<div class="forms">${rows}</div></section>`;
 }
 
 function variablesBlock(vars) {
   if (!vars?.length) return '';
   const rows = vars.map(([sym, meaning]) => `<dt>${tex(sym)}</dt><dd>${rich(meaning)}</dd>`).join('');
-  return `<section class="block block--vars">${label('Variables')}<dl class="vars">${rows}</dl></section>`;
+  return `<section class="block block--vars">${label('What the symbols mean')}<dl class="vars">${rows}</dl></section>`;
 }
 
 function exampleBlock(ex) {
   if (!ex) return '';
-  return `<section class="block block--example">${label('Worked example')}
+  return `<section class="block block--example">${label('Worked example', 'illustrative numbers')}
     <div class="example">
       ${ex.given ? `<div class="example__given"><span class="example__given-label">Given</span>${rich(ex.given)}</div>` : ''}
       <ol class="example__steps">${ex.steps.map((s) => `<li><div>${rich(s)}</div></li>`).join('')}</ol>
-      ${ex.answer ? `<div class="example__answer"><span class="example__answer-label">Result</span><span>${rich(ex.answer)}</span></div>` : ''}
+      ${ex.answer ? `<div class="example__answer"><span class="example__answer-label">Answer</span><span>${rich(ex.answer)}</span></div>` : ''}
     </div>
   </section>`;
 }
@@ -51,21 +51,15 @@ export function renderCard(card, section, index) {
     level === 'extension' ? `<span class="badge badge--ext" title="Related material that goes beyond the practice paper">Beyond the paper</span>` : '',
   ].join('');
 
-  const hints = [card.forms?.length && 'Forms', (card.when || card.variables) && 'When to use', card.clues?.length && 'Exam clues', card.example && 'Worked example']
+  const hints = [card.forms?.length && 'other forms', card.variables?.length && 'symbols', card.clues?.length && 'exam clues', card.example && 'worked example']
     .filter(Boolean)
-    .map((h) => `<span>${h}</span>`)
-    .join('');
+    .join(' · ');
 
-  const leftCol = [
-    card.when ? `<section class="block block--when">${label('When &amp; why')}${paras(card.when)}</section>` : '',
-    variablesBlock(card.variables),
-  ].join('');
-
-  const rightCol = [
-    card.clues?.length ? `<section class="block block--clues">${label('Exam clues')}<div class="callout">${list(card.clues)}</div></section>` : '',
-    card.assumptions?.length ? `<section class="block block--assumptions">${label('Assumptions &amp; limitations')}${list(card.assumptions)}</section>` : '',
-    card.traps?.length ? `<section class="block block--traps">${label('Common traps')}<div class="callout">${list(card.traps)}</div></section>` : '',
-  ].join('');
+  const whenBlock = card.when ? `<section class="block block--when">${label('When to use it')}<div class="block__lead">${paras(card.when)}</div></section>` : '';
+  const pair = (a, b) => (a || b ? `<div class="block-grid">${a}${b}</div>` : '');
+  const clues = card.clues?.length ? `<section class="block block--clues">${label('Spot it in a question', 'wording that points here')}<div class="callout">${list(card.clues)}</div></section>` : '';
+  const traps = card.traps?.length ? `<section class="block block--traps">${label('Watch out for')}<div class="callout">${list(card.traps)}</div></section>` : '';
+  const assumptions = card.assumptions?.length ? `<section class="block block--assumptions">${label('Assumptions &amp; limits')}${list(card.assumptions)}</section>` : '';
 
   return `
   <article class="fcard" id="${card.id}" data-card="${card.id}" data-level="${level}" data-paper="${onPaper}" data-open="false" aria-labelledby="${card.id}-title">
@@ -79,13 +73,16 @@ export function renderCard(card, section, index) {
     </div>
     <div class="fcard__formula" role="math" aria-label="${escapeHtml(card.title)} formula">${tex(card.formula, true)}</div>
     <button class="fcard__toggle" type="button" aria-expanded="false" aria-controls="${card.id}-body">
+      <span class="fcard__toggle-text"><span class="fcard__toggle-show">Show explanation</span><span class="fcard__toggle-hide">Hide explanation</span></span>
       <span class="fcard__toggle-hint">${hints}</span>${icons.chevron}
     </button>
     <div class="fcard__body" id="${card.id}-body">
       <div class="fcard__inner" inert>
         <div class="fcard__content">
+          ${whenBlock}
           ${formsBlock(card.forms)}
-          ${leftCol || rightCol ? `<div class="block-grid"><div class="block-col">${leftCol}</div><div class="block-col">${rightCol}</div></div>` : ''}
+          ${pair(variablesBlock(card.variables), clues)}
+          ${pair(traps, assumptions)}
           ${exampleBlock(card.example)}
           ${relatedBlock(card.related)}
         </div>
