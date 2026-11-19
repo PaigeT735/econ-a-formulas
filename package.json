@@ -1,0 +1,14 @@
+{
+  "name": "econ-a-formulas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Intermediate Economics A (Micro) exam revision site: Formula Library.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes serve -l 5173 .",
+    "check": "node scripts/check-content.mjs"
+  },
+  "devDependencies": {
+    "katex": "0.19.1"
+  }
+}
