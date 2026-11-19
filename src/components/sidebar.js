@@ -29,7 +29,8 @@ export function renderTabs() {
  * Used by both the section tabs and the in-page card navigation.
  */
 export function moveInk(strip, active, { scroll = true } = {}) {
-  const ink = strip.querySelector('.ink');
+  // The underline lives in the same track as the active link (strips may hold several tracks)
+  const ink = active?.parentElement?.querySelector(':scope > .ink') || strip.querySelector('.ink');
   if (!ink) return;
   if (!active) { ink.dataset.show = 'false'; return; }
   ink.style.width = `${active.offsetWidth - 16}px`;

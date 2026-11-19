@@ -404,7 +404,7 @@ kbd {
 }
 
 /* Human-scale headings: Newsreader reads best a touch heavier at card size */
-.fcard__title, .index__title, .ctable__title, .method__title, .lib-block__title, .pager__title, .subhead h2 { font-weight: 500; letter-spacing: -0.01em; }
+.fcard__title, .index__title, .ctable__title, .method__title, .lib-block__title, .pager__title, .subhead h2, .subhead h3 { font-weight: 500; letter-spacing: -0.01em; }
 .fcard__code, .toc__code, .nav-link__num, .index__num, .lib-block__num, .result__where, .toolbar__count { font-variant-numeric: tabular-nums; font-weight: 600; }
 
 .badge { font-weight: 600; }
