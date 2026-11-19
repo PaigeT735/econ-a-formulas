@@ -107,6 +107,7 @@
   --thumb-hover: rgba(40, 80, 140, 0.3);
   --brand-strong: #1f4f8f;
   --brand-strong-2: #193f73;
+  --brand-on: #ffffff;
   --brand-ink: #1f4f8f;
   --highlight: rgba(140, 190, 245, 0.42);
   --mark-bg: rgba(255, 255, 255, 0.75);
@@ -124,70 +125,70 @@
 /* ---------- Dark theme: deep night-blue glass ---------- */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #0a111e;
-  --bg-raise: #0f1828;
-  --bg-sunken: #070c16;
+  /* Neutral graphite: near-black with soft greys, colour only in the accents */
+  --bg: #0c0c0d;
+  --bg-raise: #141415;
+  --bg-sunken: #080808;
 
-  --ink-1: #e7eef9;
-  --ink-2: #b7c5da;
-  --ink-3: #8c9db7;
-  --ink-4: #61728d;
+  --ink-1: #ededee;
+  --ink-2: #bdbdc1;
+  --ink-3: #8f8f95;
+  --ink-4: #636368;
 
-  --line-1: rgba(165, 195, 245, 0.08);
-  --line-2: rgba(165, 195, 245, 0.13);
-  --line-3: rgba(165, 195, 245, 0.24);
+  --line-1: rgba(255, 255, 255, 0.07);
+  --line-2: rgba(255, 255, 255, 0.11);
+  --line-3: rgba(255, 255, 255, 0.2);
 
-  --glass-chrome: rgba(11, 18, 32, 0.66);
-  --glass-panel: linear-gradient(160deg, rgba(150, 182, 240, 0.105) 0%, rgba(150, 182, 240, 0.045) 100%);
-  --glass-panel-solid: #121c2e;
-  --glass-edge: rgba(170, 200, 250, 0.13);
+  --glass-chrome: rgba(14, 14, 15, 0.7);
+  --glass-panel: linear-gradient(160deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+  --glass-panel-solid: #161617;
+  --glass-edge: rgba(255, 255, 255, 0.1);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 14px 36px -18px rgba(0, 0, 0, 0.75);
-  --inset: rgba(5, 10, 20, 0.5);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 36px -18px rgba(0, 0, 0, 0.8);
+  --inset: rgba(0, 0, 0, 0.42);
 
-  --accent-consumer: #72cfb1;
-  --accent-production: #84b4f2;
-  --accent-costs: #ab9df2;
-  --accent-competition: #63c9da;
-  --accent-monopoly: #f292a3;
-  --accent-oligopoly: #c69df0;
-  --accent-games: #92b2ff;
-  --accent-welfare: #e4c76d;
-  --accent-general: #a8b6ca;
-  --accent: #84b4f2;
+  --accent-consumer: #7fcdb3;
+  --accent-production: #8fb6ea;
+  --accent-costs: #b3a8ec;
+  --accent-competition: #74c6d2;
+  --accent-monopoly: #ee9aa8;
+  --accent-oligopoly: #c9a6e8;
+  --accent-games: #9db7f2;
+  --accent-welfare: #e2c878;
+  --accent-general: #b9b9bf;
+  --accent: #d6d6da;
 
-  --clue: #e9bb63;
-  --trap: #f28c7e;
-  --ok: #72cfb1;
+  --clue: #e5bd6c;
+  --trap: #ef8f82;
+  --ok: #7fcdb3;
 
-  --glass-rgb: 170, 198, 245;
-  --glass-k: 0.12;
-  --shadow-rgb: 0, 3, 10;
+  --glass-rgb: 255, 255, 255;
+  --glass-k: 0.1;
+  --shadow-rgb: 0, 0, 0;
   --shadow-k: 2.4;
-  --edge-hi: rgba(180, 208, 255, 0.26);
-  --pressed: rgba(170, 200, 250, 0.16);
-  --card-open: linear-gradient(160deg, rgba(150, 182, 240, 0.13), rgba(150, 182, 240, 0.06));
-  --drawer-bg: rgba(11, 18, 32, 0.94);
-  --popover: rgba(14, 23, 40, 0.97);
-  --thead-bg: rgba(130, 160, 220, 0.08);
-  --sticky-th: #111a2b;
-  --scrim: rgba(0, 0, 0, 0.5);
-  --thumb: rgba(170, 200, 250, 0.16);
-  --thumb-hover: rgba(170, 200, 250, 0.28);
-  --brand-strong: #3d79d6;
-  --brand-strong-2: #4a86e3;
-  --brand-ink: #a8c7ff;
-  --highlight: rgba(80, 130, 220, 0.35);
-  --mark-bg: rgba(150, 182, 240, 0.08);
-  --mark-line-1: #84b4f2;
-  --mark-line-2: #63c9da;
-  --mark-dot: #0a111e;
+  --edge-hi: rgba(255, 255, 255, 0.22);
+  --pressed: rgba(255, 255, 255, 0.13);
+  --card-open: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+  --drawer-bg: rgba(16, 16, 17, 0.95);
+  --popover: rgba(22, 22, 23, 0.97);
+  --thead-bg: rgba(255, 255, 255, 0.05);
+  --sticky-th: #151516;
+  --scrim: rgba(0, 0, 0, 0.55);
+  --thumb: rgba(255, 255, 255, 0.14);
+  --thumb-hover: rgba(255, 255, 255, 0.26);
+  --brand-strong: #ececee;
+  --brand-strong-2: #ffffff;
+  --brand-on: #111112;
+  --brand-ink: #f2f2f3;
+  --highlight: rgba(255, 255, 255, 0.16);
+  --mark-bg: rgba(255, 255, 255, 0.06);
+  --mark-line-1: #d6d6da;
+  --mark-line-2: #8f8f95;
+  --mark-dot: #0c0c0d;
   --atmos:
-    radial-gradient(50vw 48vh at 6% 0%, rgba(52, 96, 190, 0.34), transparent 70%),
-    radial-gradient(42vw 44vh at 98% 10%, rgba(110, 82, 200, 0.24), transparent 70%),
-    radial-gradient(50vw 48vh at 80% 100%, rgba(30, 130, 140, 0.24), transparent 70%),
-    radial-gradient(36vw 36vh at 14% 90%, rgba(70, 60, 150, 0.18), transparent 70%),
-    linear-gradient(180deg, #0b1322 0%, #090f1b 100%);
+    radial-gradient(55vw 50vh at 8% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+    radial-gradient(45vw 45vh at 96% 100%, rgba(255, 255, 255, 0.04), transparent 70%),
+    linear-gradient(180deg, #111112 0%, #0b0b0c 100%);
 }
 
 [data-accent='consumer'] { --accent: var(--accent-consumer); }

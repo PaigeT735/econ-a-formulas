@@ -16,9 +16,9 @@
   white-space: nowrap;
 }
 .btn:hover { background: rgba(var(--glass-rgb), calc(0.92 * var(--glass-k))); border-color: var(--line-3); color: var(--ink-1); }
-.btn--primary { background: var(--brand-strong); color: #fff; border-color: transparent; box-shadow: 0 6px 18px -8px rgba(var(--shadow-rgb), calc(0.6 * var(--shadow-k))); }
-.btn--primary:hover { background: var(--brand-strong-2); color: #fff; }
-.btn--primary kbd { color: #ffffffcc; border-color: #ffffff59; background: #ffffff1f; }
+.btn--primary { background: var(--brand-strong); color: var(--brand-on); border-color: transparent; box-shadow: 0 6px 18px -8px rgba(var(--shadow-rgb), calc(0.6 * var(--shadow-k))); }
+.btn--primary:hover { background: var(--brand-strong-2); color: var(--brand-on); }
+.btn--primary kbd { color: inherit; opacity: 0.75; border-color: currentColor; background: transparent; }
 .btn--icon { width: 36px; padding: 0; justify-content: center; }
 .btn svg { width: 16px; height: 16px; }
 
